@@ -3,6 +3,7 @@
 import { createClient, createServiceClient } from "@/lib/supabase/server";
 import { addTime } from "@/lib/utils";
 import { sendBookingCancelledEmail } from "@/lib/email";
+import { createPaymongoCheckoutSession, createPaymongoQrPayment } from "@/lib/paymongo";
 
 export async function getActiveCourts() {
   const supabase = await createClient();
@@ -40,13 +41,13 @@ export async function getAvailableTimeSlots(
   const court = await getCourt(courtId);
   if (!court || court.status !== "active") return [];
 
-  // Get existing reservations
+  // Get existing reservations (only confirmed/paid bookings block time slots)
   const { data: reservations } = await supabase
     .from("reservations")
     .select("start_time, end_time, status")
     .eq("court_id", courtId)
     .eq("reservation_date", date)
-    .not("status", "eq", "cancelled");
+    .in("status", ["confirmed", "checked_in", "completed"]);
 
   // Get court blocks
   const { data: blocks } = await supabase
@@ -197,6 +198,58 @@ export async function createReservation(data) {
     .single();
 
   if (payError) throw new Error(payError.message);
+
+  // 6. Handle PayMongo Dynamic QR Ph or Checkout Session creation
+  if (data.payment_method === "paymongo" || data.payment_method === "qrph") {
+    try {
+      if (data.flow === "checkout_session") {
+        const session = await createPaymongoCheckoutSession({
+          reservation,
+          court,
+          customer,
+          origin: data.origin,
+        });
+
+        await supabase
+          .from("payments")
+          .update({ transaction_id: session.sessionId })
+          .eq("id", payment.id);
+
+        return {
+          reservation,
+          payment: { ...payment, transaction_id: session.sessionId },
+          checkoutUrl: session.checkoutUrl,
+        };
+      }
+
+      // Default: Create Dynamic QR Ph Code for in-app scanning
+      const qrResult = await createPaymongoQrPayment({
+        reservation,
+        court,
+        customer,
+      });
+
+      await supabase
+        .from("payments")
+        .update({
+          transaction_id: qrResult.paymentIntentId,
+          payment_method: "qrph",
+        })
+        .eq("id", payment.id);
+
+      return {
+        reservation,
+        payment: { ...payment, transaction_id: qrResult.paymentIntentId, payment_method: "qrph" },
+        qrCodeUrl: qrResult.qrCodeUrl,
+        paymentIntentId: qrResult.paymentIntentId,
+      };
+    } catch (sessionErr) {
+      // Clean up reservation if PayMongo fails to avoid blocking the slot
+      await supabase.from("payments").delete().eq("id", payment.id);
+      await supabase.from("reservations").delete().eq("id", reservation.id);
+      throw sessionErr;
+    }
+  }
 
   return { reservation, payment };
 }

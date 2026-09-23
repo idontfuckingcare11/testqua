@@ -1,18 +1,28 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useBooking } from "@/hooks/use-booking";
 import { BookingSteps } from "@/components/booking/booking-steps";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { ArrowRight, ArrowLeft, Calendar, Clock, Landmark, User, Mail, Phone } from "lucide-react";
-import { formatCurrency, formatTime, formatTimeRange, formatDate } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { ArrowRight, ArrowLeft, Calendar, Clock, Landmark, User, Mail, Phone, ShieldCheck } from "lucide-react";
+import { formatCurrency, formatTimeRange, formatDate } from "@/lib/utils";
 
 export default function BookSummaryPage() {
   const router = useRouter();
   const { data } = useBooking();
+
+  const [agreed, setAgreed] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [termsOpen, setTermsOpen] = useState(false);
 
   useEffect(() => {
     if (!data.date || !data.courtId || !data.startTime || !data.fullName) {
@@ -33,11 +43,11 @@ export default function BookSummaryPage() {
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
           Reservation Summary
         </h1>
-        <p className="text-gray-500">Review your booking details before payment</p>
+        <p className="text-gray-500">Review your booking details and accept terms before payment</p>
       </div>
 
       <div className="max-w-md mx-auto">
-        <Card>
+        <Card className="shadow-sm border-gray-200">
           <CardContent className="p-6 space-y-4">
             <div className="flex items-center gap-3">
               <Landmark className="h-5 w-5 text-green-600" />
@@ -114,31 +124,98 @@ export default function BookSummaryPage() {
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2">
                 <User className="h-4 w-4 text-gray-400" />
-                <span className="text-gray-500">Customer:</span>
+                <span className="text-gray-500 text-xs">Customer:</span>
                 <span className="font-medium text-gray-900">{data.fullName}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-gray-400" />
-                <span className="text-gray-500">Email:</span>
-                <span className="font-medium text-gray-900">{data.email}</span>
+                <span className="text-gray-500 text-xs">Email:</span>
+                <span className="font-medium text-gray-900 break-all">{data.email}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-gray-400" />
-                <span className="text-gray-500">Phone:</span>
+                <span className="text-gray-500 text-xs">Phone:</span>
                 <span className="font-medium text-gray-900">{data.phone}</span>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <div className="mt-6 flex justify-between">
+        {/* POLICY & TERMS AND CONDITIONS */}
+        <div className="mt-6 space-y-3">
+          <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={agreed}
+                onChange={(e) => setAgreed(e.target.checked)}
+                className="mt-0.5 h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+              />
+              <span className="text-xs text-gray-700 leading-relaxed">
+                I agree that court bookings and payments are <strong>final and non-refundable</strong> once confirmed.
+              </span>
+            </label>
+          </div>
+
+          <div className="bg-white border border-gray-200 rounded-xl p-4">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={termsAccepted}
+                onChange={(e) => setTermsAccepted(e.target.checked)}
+                className="mt-0.5 h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+              />
+              <span className="text-xs text-gray-700 leading-relaxed">
+                I have read and agree to the{" "}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setTermsOpen(true);
+                  }}
+                  className="font-medium text-green-600 underline underline-offset-2 hover:text-green-700"
+                >
+                  Terms &amp; Conditions
+                </button>
+                .
+              </span>
+            </label>
+          </div>
+        </div>
+
+        {/* Terms Dialog */}
+        <Dialog open={termsOpen} onOpenChange={setTermsOpen}>
+          <DialogContent className="max-w-lg sm:max-w-lg">
+            <DialogHeader>
+              <DialogTitle>Terms &amp; Conditions</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-3 text-sm text-gray-600 text-left max-h-[55vh] overflow-y-auto">
+              <p>
+                1. Reservations paid via QR Ph are automatically confirmed upon scanning and successful authorization.
+              </p>
+              <p>
+                3. All bookings are final and non-refundable. No cancellations or rescheduling are allowed, and no-shows are not refunded.
+              </p>
+              <p>
+                4. Your contact details are strictly used to coordinate your booking and send confirmation notifications.
+              </p>
+              <p>
+                5. If the facility suspends bookings due to maintenance or force majeure, the facility will coordinate with you for alternative arrangements.
+              </p>
+            </div>
+          </DialogContent>
+        </Dialog>
+
+        <div className="mt-6 flex justify-between items-center gap-3">
           <Button variant="outline" onClick={() => router.push("/book/details")}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Button>
           <Button
             onClick={() => router.push("/book/payment")}
-            className="bg-green-600 hover:bg-green-700 text-white px-8 font-bold"
+            disabled={!agreed || !termsAccepted}
+            className="bg-green-600 hover:bg-green-700 text-white px-8 font-bold disabled:opacity-50"
           >
             Proceed to Payment
             <ArrowRight className="ml-2 h-4 w-4" />

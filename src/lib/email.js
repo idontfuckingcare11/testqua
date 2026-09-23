@@ -2,17 +2,36 @@ import nodemailer from "nodemailer";
 import { createServiceClient } from "@/lib/supabase/server";
 
 async function getEmailConfig() {
-  const supabase = await createServiceClient();
-  const { data } = await supabase
-    .from("settings")
-    .select("value")
-    .eq("key", "email_config")
-    .single();
+  // 1. Check environment variables first (.env.local)
+  if (process.env.SMTP_USER && process.env.SMTP_PASS) {
+    return {
+      enabled: true,
+      smtp_host: process.env.SMTP_HOST || "smtp.gmail.com",
+      smtp_port: parseInt(process.env.SMTP_PORT || "587", 10),
+      smtp_user: process.env.SMTP_USER,
+      smtp_pass: process.env.SMTP_PASS,
+      from_email: process.env.EMAIL_FROM || process.env.SMTP_USER,
+      from_name: process.env.EMAIL_FROM_NAME || "Court ni Wardo",
+    };
+  }
 
-  if (!data?.value) return null;
-  const config = data.value;
-  if (!config.enabled || !config.smtp_user || !config.smtp_pass) return null;
-  return config;
+  // 2. Fallback to Supabase settings table
+  try {
+    const supabase = await createServiceClient();
+    const { data } = await supabase
+      .from("settings")
+      .select("value")
+      .eq("key", "email_config")
+      .single();
+
+    if (!data?.value) return null;
+    const config = data.value;
+    if (!config.enabled || !config.smtp_user || !config.smtp_pass) return null;
+    return config;
+  } catch (err) {
+    console.error("Error fetching email_config from settings:", err);
+    return null;
+  }
 }
 
 async function getFacilityName() {
@@ -40,7 +59,7 @@ function buildConfirmedEmail(
   const body = `
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
       <div style="background-color: #16a34a; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-        <h1 style="margin: 0; font-size: 24px;">✅ Booking Confirmed!</h1>
+        <h1 style="margin: 0; font-size: 24px;">Booking Confirmed!</h1>
       </div>
       <div style="background-color: #f9fafb; padding: 20px; border: 1px solid #e5e7eb;">
         <p>Hi <strong>${customerName}</strong>,</p>
@@ -94,9 +113,13 @@ function buildCancelledEmail(
 
 async function sendEmail(to, subject, html) {
   const config = await getEmailConfig();
-  if (!config) return false;
+  if (!config) {
+    console.warn("[Email] No email configuration found (.env.local or settings table). Skipping email.");
+    return false;
+  }
 
   try {
+    console.log(`[Email] Attempting to send email to: ${to} (Subject: ${subject})...`);
     const transporter = nodemailer.createTransport({
       host: config.smtp_host,
       port: config.smtp_port,
@@ -107,16 +130,17 @@ async function sendEmail(to, subject, html) {
       },
     });
 
-    await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: `"${config.from_name}" <${config.from_email}>`,
       to,
       subject,
       html,
     });
 
+    console.log(`[Email] Email sent successfully to ${to}. MessageId: ${info.messageId}`);
     return true;
   } catch (error) {
-    console.error("Email send failed:", error);
+    console.error("[Email] Send failed:", error);
     return false;
   }
 }

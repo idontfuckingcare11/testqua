@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
-import { Menu, CircleDot, Search, Loader2, X } from "lucide-react";
+import { Menu, Search, Loader2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -132,9 +133,17 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-        <Link href="/" className="flex items-center gap-2 font-bold text-xl text-green-700">
-          <CircleDot className="h-7 w-7 text-green-600" />
-          <span>Court ni Wardo</span>
+        <Link href="/" className="flex items-center gap-2">
+          <Image
+            src="/wardologo.png"
+            alt="Court ni Wardo Logo"
+            width={44}
+            height={44}
+            className="object-contain"
+            style={{ mixBlendMode: "multiply" }}
+            priority
+          />
+          <span className="font-bold text-xl text-green-700 hidden sm:block">Court ni Wardo</span>
         </Link>
 
         {/* Desktop nav */}
@@ -193,11 +202,18 @@ export function Header() {
             <div className="flex flex-col gap-6 mt-8">
               <Link
                 href="/"
-                className="flex items-center gap-2 font-bold text-xl text-green-700"
+                className="flex items-center gap-2"
                 onClick={() => setOpen(false)}
               >
-                <CircleDot className="h-7 w-7 text-green-600" />
-                <span>Court ni Wardo</span>
+                <Image
+                  src="/wardologo.png"
+                  alt="Court ni Wardo Logo"
+                  width={40}
+                  height={40}
+                  className="object-contain"
+                  style={{ mixBlendMode: "multiply" }}
+                />
+                <span className="font-bold text-xl text-green-700">Court ni Wardo</span>
               </Link>
 
               {/* Mobile search */}

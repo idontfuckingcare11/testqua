@@ -1,4 +1,4 @@
-﻿import { Inter } from "next/font/google";
+import { Inter } from "next/font/google";
 import { Providers } from "@/components/providers";
 import "./globals.css";
 
@@ -11,6 +11,11 @@ export const metadata = {
   title: "Court ni Wardo - Book Your Pickleball Court",
   description:
     "Book pickleball courts easily at Court ni Wardo. Indoor and outdoor courts available. Fast, simple, no account required.",
+  icons: {
+    icon: "/wardologo.png",
+    shortcut: "/wardologo.png",
+    apple: "/wardologo.png",
+  },
 };
 
 export default function RootLayout({ children }) {

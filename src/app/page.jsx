@@ -1,4 +1,5 @@
-﻿import Link from "next/link";
+import Link from "next/link";
+import Image from "next/image";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,14 +26,17 @@ export default function HomePage() {
       <Header />
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-green-700 via-green-600 to-green-800 text-white overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10" />
-          <div className="container mx-auto px-4 md:px-6 py-20 md:py-32 relative">
+        <section className="relative bg-green-800 text-white overflow-hidden">
+          <Image
+            src="/wardobg.png"
+            alt="Pickleball Court Background"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center pointer-events-none"
+          />
+          <div className="container mx-auto px-4 md:px-6 py-20 md:py-32 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 bg-white/10 rounded-full px-4 py-1.5 text-sm mb-6 backdrop-blur">
-                <CircleDot className="h-4 w-4" />
-                <span>Pickleball Court Reservations</span>
-              </div>
               <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                 Book Your Court.
                 <br />
@@ -95,8 +99,8 @@ export default function HomePage() {
                 {
                   step: "4",
                   icon: <CreditCard className="h-6 w-6" />,
-                  title: "Pay ",
-                  desc: "Complete your booking with GCash, GoTyme, or cash.",
+                  title: "Pay",
+                  desc: "Complete your booking with GCash, Maya, or Banks via QR Ph.",
                 },
               ].map((item, i) => (
                 <div key={i} className="text-center">
@@ -179,8 +183,8 @@ export default function HomePage() {
                   <p className="text-xs text-gray-400 mt-2">Courts 3, 4, 6</p>
                 </CardContent>
               </Card>
-              <Card className="border-2 border-green-600 relative">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+              <Card className="border-2 border-green-600 relative overflow-visible shadow-md">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-600 text-white text-xs font-bold px-3.5 py-1 rounded-full shadow-sm z-10 whitespace-nowrap">
                   Popular
                 </div>
                 <CardContent className="p-6 text-center">
@@ -234,7 +238,7 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
                 { icon: <Zap className="h-6 w-6" />, title: "Instant Booking", desc: "Reserve your court in under 60 seconds. No account needed." },
-                { icon: <Shield className="h-6 w-6" />, title: "Secure Payment", desc: "Pay with GCash, GoTyme, or cash. Your payment is protected." },
+                { icon: <Shield className="h-6 w-6" />, title: "Secure Payment", desc: "Pay with GCash, Maya, or Banks via QR Ph. Your payment is protected." },
                 { icon: <Users className="h-6 w-6" />, title: "No Registration", desc: "Just enter your name, email, and phone. That's it." },
               ].map((item, i) => (
                 <div key={i} className="text-center p-6">
@@ -258,7 +262,7 @@ export default function HomePage() {
             <div className="max-w-2xl mx-auto space-y-4">
               {[
                 { q: "Do I need to create an account to book?", a: "No Just enter your name, email, and phone number. Booking is fast and simple." },
-                { q: "What payment methods do you accept?", a: "We accept GCash, GoTyme, and cash payments. Online payments are processed securely." },
+                { q: "What payment methods do you accept?", a: "We accept GCash, Maya, and bank transfers via QR Ph. Online payments are processed instantly and securely." },
                 { q: "Can I cancel my reservation?", a: "No. All bookings are final and non-refundable, including cancellations or no-shows." },
                 { q: "Can I reschedule my reservation?", a: "No. Once booked, reservations cannot be rescheduled. Please double-check your date and time before paying." },
                 { q: "Are the courts suitable for beginners?", a: "Absolutely Our courts welcome players of all skill levels. We also offer equipment rental." },
@@ -274,8 +278,15 @@ export default function HomePage() {
         </section>
 
         {/* CTA */}
-        <section className="py-16 md:py-24 bg-gradient-to-br from-green-700 to-green-800 text-white">
-          <div className="container mx-auto px-4 md:px-6 text-center">
+        <section className="relative py-16 md:py-24 bg-green-800 text-white overflow-hidden">
+          <Image
+            src="/wardobg.png"
+            alt="Pickleball Court Background"
+            fill
+            sizes="100vw"
+            className="object-cover object-center pointer-events-none"
+          />
+          <div className="container mx-auto px-4 md:px-6 text-center relative z-10">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Play?</h2>
             <p className="text-green-100 text-lg mb-8 max-w-xl mx-auto">
               Book your pickleball court now and join the fastest-growing sport in the Philippines.

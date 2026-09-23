@@ -102,10 +102,6 @@ export default function AdminReportsPage() {
     .filter((r) => r.status === "pending")
     .reduce((sum, r) => sum + Number(r.amount), 0);
 
-  const refundedRevenue = revenueData
-    .filter((r) => r.status === "refunded")
-    .reduce((sum, r) => sum + Number(r.amount), 0);
-
   const statusCounts = reservationData.reduce(
     (acc, r) => {
       acc[r.status] = (acc[r.status] || 0) + 1;
@@ -147,10 +143,9 @@ export default function AdminReportsPage() {
   const revenueChartByDay = revenueData.reduce(
     (acc, r) => {
       const date = r.created_at.split("T")[0];
-      if (!acc[date]) acc[date] = { date, paid: 0, pending: 0, refunded: 0 };
+      if (!acc[date]) acc[date] = { date, paid: 0, pending: 0 };
       if (r.status === "paid") acc[date].paid += Number(r.amount);
       else if (r.status === "pending") acc[date].pending += Number(r.amount);
-      else if (r.status === "refunded") acc[date].refunded += Number(r.amount);
       return acc;
     },
     {}
@@ -258,7 +253,7 @@ export default function AdminReportsPage() {
             </TabsContent>
           </Tabs>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             <div className="bg-green-50 rounded-lg p-4">
               <p className="text-sm text-green-600 font-medium">Collected</p>
               <p className="text-2xl font-bold text-green-700">{formatCurrency(paidRevenue)}</p>
@@ -266,10 +261,6 @@ export default function AdminReportsPage() {
             <div className="bg-yellow-50 rounded-lg p-4">
               <p className="text-sm text-yellow-600 font-medium">Pending</p>
               <p className="text-2xl font-bold text-yellow-700">{formatCurrency(pendingRevenue)}</p>
-            </div>
-            <div className="bg-red-50 rounded-lg p-4">
-              <p className="text-sm text-red-600 font-medium">Refunded</p>
-              <p className="text-2xl font-bold text-red-700">{formatCurrency(refundedRevenue)}</p>
             </div>
           </div>
 
@@ -299,7 +290,6 @@ export default function AdminReportsPage() {
                   />
                   <Bar dataKey="paid" fill="#22c55e" name="Collected" radius={[4, 4, 0, 0]} />
                   <Bar dataKey="pending" fill="#eab308" name="Pending" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="refunded" fill="#ef4444" name="Refunded" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

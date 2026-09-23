@@ -1,6 +1,6 @@
-﻿import { getDashboardStats, getReservations } from "@/actions/admin";
+import { getDashboardStats, getReservations } from "@/actions/admin";
 import { Card, CardContent } from "@/components/ui/card";
-import { formatCurrency, formatDate, formatTimeRange } from "@/lib/utils";
+import { formatCurrency, formatDate, formatTimeRange, getStatusColor, cn } from "@/lib/utils";
 import {
   CalendarCheck,
   DollarSign,
@@ -69,7 +69,7 @@ export default async function AdminDashboardPage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-sm text-gray-500 mt-1">
-          Welcome back. Here;s what;s happening today.
+          Welcome back. Here&apos;s what&apos;s happening today.
         </p>
       </div>
 
@@ -95,7 +95,7 @@ export default async function AdminDashboardPage() {
       {/* Today's Schedule */}
       <Card>
         <CardContent className="p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Today;s Schedule</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Today&apos;s Schedule</h2>
           {todayReservations.length === 0 ? (
             <p className="text-gray-500 text-sm py-8 text-center">
               No reservations scheduled for today
@@ -117,14 +117,14 @@ export default async function AdminDashboardPage() {
                     const court = res.court;
                     const customer = res.customer;
                     return (
-                      <tr key={res.id} className="border-b last:border-0">
+                      <tr key={res.id} className="border-b last:border-0 hover:bg-gray-50/60 transition-colors">
                         <td className="py-3 font-medium text-gray-900">
                           {formatTimeRange(res.start_time, res.end_time)}
                         </td>
-                        <td className="py-3 text-gray-600">{court?.name || "N/A"}</td>
-                        <td className="py-3 text-gray-600">{customer?.full_name || "N/A"}</td>
+                        <td className="py-3 text-gray-600 font-medium">{court?.name || "N/A"}</td>
+                        <td className="py-3 text-gray-700">{customer?.full_name || "N/A"}</td>
                         <td className="py-3">
-                          <span className="text-xs font-semibold px-2 py-1 rounded-full bg-green-100 text-green-800">
+                          <span className={cn("text-xs font-semibold px-2.5 py-1 rounded-full capitalize", getStatusColor(res.status))}>
                             {res.status}
                           </span>
                         </td>

@@ -1,4 +1,4 @@
-﻿import { z } from "zod";
+import { z } from "zod";
 
 export const customerInfoSchema = z.object({
   full_name: z
@@ -64,7 +64,7 @@ export const manualReservationSchema = z.object({
   full_name: z.string().min(2, "Name is required"),
   email: z.string().email("Valid email is required"),
   phone: z.string().min(10, "Valid phone is required"),
-  payment_method: z.enum(["gcash", "gotyme", "cash", "card"]),
+  payment_method: z.enum(["paymongo", "gcash", "gotyme", "cash", "card", "paymaya", "qrph"]),
   notes: z.string().optional(),
 });
 

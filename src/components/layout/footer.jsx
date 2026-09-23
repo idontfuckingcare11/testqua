@@ -1,5 +1,6 @@
-﻿import Link from "next/link";
-import { CircleDot, MapPin, Phone, Mail } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import { MapPin, Phone, Mail } from "lucide-react";
 
 export function Footer() {
   return (
@@ -8,7 +9,14 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-2 font-bold text-xl text-white mb-4">
-              <CircleDot className="h-7 w-7 text-green-400" />
+              <Image
+                src="/wardologo.png"
+                alt="Court ni Wardo Logo"
+                width={44}
+                height={44}
+                className="object-contain"
+                style={{ mixBlendMode: "screen" }}
+              />
               <span>Court ni Wardo</span>
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed max-w-md">

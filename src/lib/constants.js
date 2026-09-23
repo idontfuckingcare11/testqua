@@ -1,4 +1,4 @@
-﻿export const RESERVATION_STATUSES = [
+export const RESERVATION_STATUSES = [
   "pending",
   "confirmed",
   "checked_in",
@@ -9,7 +9,7 @@
 
 export const PAYMENT_STATUSES = ["pending", "paid", "failed", "cancelled"];
 
-export const PAYMENT_METHODS = ["gcash", "gotyme", "cash", "card"];
+export const PAYMENT_METHODS = ["paymongo", "gcash", "gotyme", "cash", "card", "paymaya", "qrph"];
 
 export const COURT_STATUSES = ["active", "maintenance", "disabled"];
 
@@ -32,10 +32,13 @@ export const PAYMENT_STATUS_LABELS = {
 };
 
 export const PAYMENT_METHOD_LABELS = {
+  paymongo: "Online Payment (PayMongo)",
   gcash: "GCash",
   gotyme: "GoTyme",
   cash: "Cash",
   card: "Card",
+  paymaya: "Maya",
+  qrph: "QR Ph",
 };
 
 export const COURT_STATUS_LABELS = {

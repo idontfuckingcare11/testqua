@@ -329,3 +329,26 @@ export async function updateSettings(key, value) {
   if (error) throw new Error(error.message);
   revalidatePath("/manage/settings");
 }
+
+export async function deleteReservation(reservationId) {
+  const supabase = await createServiceClient();
+
+  // Clean up associated payments and notifications
+  await supabase.from("payments").delete().eq("reservation_id", reservationId);
+  await supabase.from("notifications").delete().eq("reservation_id", reservationId);
+
+  const { error } = await supabase
+    .from("reservations")
+    .delete()
+    .eq("id", reservationId);
+
+  if (error) throw new Error(error.message);
+
+  revalidatePath("/manage");
+  revalidatePath("/manage/reservations");
+  revalidatePath("/manage/calendar");
+  revalidatePath("/manage/payments");
+
+  return { success: true };
+}
+
