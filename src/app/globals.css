@@ -108,11 +108,44 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    -webkit-tap-highlight-color: transparent;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
+
   html {
     @apply font-sans;
+    /* Prevent horizontal overflow globally */
+    overflow-x: hidden;
+    /* iOS smooth scrolling */
+    -webkit-text-size-adjust: 100%;
   }
+
+  body {
+    @apply bg-background text-foreground;
+    overflow-x: hidden;
+    /* Safe area insets for notch/home indicator */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Ensure images are responsive by default */
+  img, video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Responsive touch-action improvements */
+  button, [role="button"], a {
+    touch-action: manipulation;
+  }
+}
+
+/* Mobile utility: hide horizontal overflow in scrollable containers */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix 100dvh for mobile browsers (address bar aware) */
+.min-h-screen-mobile {
+  min-height: 100dvh;
 }

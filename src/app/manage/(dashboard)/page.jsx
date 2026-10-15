@@ -74,17 +74,17 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4 mb-8">
         {statCards.map((stat, i) => (
           <Card key={i}>
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className={`p-2 rounded-lg ${stat.color}`}>
-                  <stat.icon className="h-5 w-5" />
+            <CardContent className="p-3 md:p-4">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className={`p-1.5 md:p-2 rounded-lg ${stat.color} shrink-0`}>
+                  <stat.icon className="h-4 w-4 md:h-5 md:w-5" />
                 </div>
-                <div>
-                  <p className="text-xs text-gray-500">{stat.label}</p>
-                  <p className="text-lg font-bold text-gray-900">{stat.value}</p>
+                <div className="min-w-0">
+                  <p className="text-[10px] md:text-xs text-gray-500 leading-tight">{stat.label}</p>
+                  <p className="text-base md:text-lg font-bold text-gray-900 truncate">{stat.value}</p>
                 </div>
               </div>
             </CardContent>
@@ -101,15 +101,15 @@ export default async function AdminDashboardPage() {
               No reservations scheduled for today
             </p>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+            <div className="overflow-x-auto -mx-6">
+              <table className="w-full text-sm min-w-[500px]">
                 <thead>
                   <tr className="border-b text-left text-gray-500">
-                    <th className="pb-3 font-medium">Time</th>
+                    <th className="pb-3 pl-6 font-medium">Time</th>
                     <th className="pb-3 font-medium">Court</th>
                     <th className="pb-3 font-medium">Customer</th>
                     <th className="pb-3 font-medium">Status</th>
-                    <th className="pb-3 font-medium text-right">Amount</th>
+                    <th className="pb-3 pr-6 font-medium text-right">Amount</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -118,7 +118,7 @@ export default async function AdminDashboardPage() {
                     const customer = res.customer;
                     return (
                       <tr key={res.id} className="border-b last:border-0 hover:bg-gray-50/60 transition-colors">
-                        <td className="py-3 font-medium text-gray-900">
+                        <td className="py-3 pl-6 font-medium text-gray-900">
                           {formatTimeRange(res.start_time, res.end_time)}
                         </td>
                         <td className="py-3 text-gray-600 font-medium">{court?.name || "N/A"}</td>
@@ -128,7 +128,7 @@ export default async function AdminDashboardPage() {
                             {res.status}
                           </span>
                         </td>
-                        <td className="py-3 text-right font-medium text-gray-900">
+                        <td className="py-3 pr-6 text-right font-medium text-gray-900">
                           {formatCurrency(Number(res.total_amount))}
                         </td>
                       </tr>

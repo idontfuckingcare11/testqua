@@ -82,7 +82,7 @@ export default function BookSummaryPage() {
                     : ""}
                 </p>
                 <p className="text-xs text-gray-400">
-                  {slotCount} slot{slotCount !== 1 ? "s" : ""} · {hours} hour{hours !== 1 ? "s" : ""}
+                  {slotCount} slot{slotCount !== 1 ? "s" : ""}   {hours} hour{hours !== 1 ? "s" : ""}
                 </p>
                 {data.selectedSlots.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-1">
@@ -105,7 +105,7 @@ export default function BookSummaryPage() {
 
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-500">Court Fee ({formatCurrency(data.courtPrice || 0)} × {hours}h)</span>
+                <span className="text-gray-500">Court Fee ({formatCurrency(data.courtPrice || 0)}   {hours}h)</span>
                 <span className="text-gray-900">{formatCurrency(courtFee)}</span>
               </div>
               <div className="flex justify-between text-sm">

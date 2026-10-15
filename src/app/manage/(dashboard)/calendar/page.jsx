@@ -294,7 +294,7 @@ export default function AdminCalendarPage() {
         open={!!selectedReservation}
         onOpenChange={() => setSelectedReservation(null)}
       >
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-lg w-[calc(100vw-2rem)] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-mono text-green-700">
               {selectedReservation?.reservation_number}
@@ -327,7 +327,7 @@ export default function AdminCalendarPage() {
                 </div>
                 <div>
                   <p className="text-gray-500 flex items-center gap-1">
-                    <Calendar className="h-3.5 w-3.5" /> Date 
+                    <Calendar className="h-3.5 w-3.5" /> Date
                   </p>
                   <p className="font-medium">
                     {formatDate(selectedReservation.reservation_date)}
@@ -374,7 +374,7 @@ function DayView({ courts,
   date,
   reservations,
   onSelectReservation,
- }) {
+}) {
   if (courts.length === 0) {
     return (
       <Card>
@@ -424,9 +424,9 @@ function DayView({ courts,
                 return (
                   <div
                     key={`${court.id}-${hour}`}
-onClick={() =>
-  reservation && setSelectedReservation(reservation)
-}
+                    onClick={() =>
+                      reservation && setSelectedReservation(reservation)
+                    }
                     className={cn(
                       "border rounded-md h-14 flex items-center justify-center text-xs font-medium transition-colors cursor-pointer",
                       STATUS_BG[status] || "bg-gray-50 border-gray-200"
@@ -469,7 +469,7 @@ function WeekView({ courts,
   weekDates,
   reservations,
   onSelectReservation,
- }) {
+}) {
   if (courts.length === 0) {
     return (
       <Card>
@@ -553,10 +553,10 @@ function WeekView({ courts,
                             r.status === "pending"
                               ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
                               : r.status === "confirmed"
-                              ? "bg-blue-100 text-blue-800 hover:bg-blue-200"
-                              : r.status === "checked_in"
-                              ? "bg-blue-100 text-blue-800 hover:bg-blue-200"
-                              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                                ? "bg-blue-100 text-blue-800 hover:bg-blue-200"
+                                : r.status === "checked_in"
+                                  ? "bg-blue-100 text-blue-800 hover:bg-blue-200"
+                                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                           )}
                           title={`${formatTimeRange(r.start_time, r.end_time)} — ${(r.customer)?.full_name}`}
                         >
@@ -585,7 +585,7 @@ function WeekView({ courts,
 function MonthView({ monthDays,
   reservations,
   onSelectDate,
- }) {
+}) {
   const today = new Date().toISOString().split("T")[0];
 
   return (

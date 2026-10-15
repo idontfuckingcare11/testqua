@@ -1,4 +1,4 @@
-﻿import { requireAdmin } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth";
 import { AdminSidebar } from "@/components/admin/admin-sidebar";
 
 export default async function ManageDashboardLayout({ children }) {

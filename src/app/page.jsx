@@ -35,28 +35,28 @@ export default function HomePage() {
             sizes="100vw"
             className="object-cover object-center pointer-events-none"
           />
-          <div className="container mx-auto px-4 md:px-6 py-20 md:py-32 relative z-10">
+          <div className="container mx-auto px-4 md:px-6 py-16 md:py-32 relative z-10">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-6 leading-tight">
                 Book Your Court.
                 <br />
                 <span className="text-yellow-300">Play Pickleball.</span>
               </h1>
-              <p className="text-lg md:text-xl text-green-100 mb-8 max-w-xl mx-auto">
+              <p className="text-base md:text-xl text-green-100 mb-8 max-w-xl mx-auto">
                 The fastest-growing sport deserves the best courts. Reserve your
-                pickleball court in seconds — no account needed.
+                pickleball court in seconds - no account needed.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/book"
-                  className="inline-flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-green-900 font-bold text-lg px-8 py-6 rounded-xl transition-colors"
+                  className="inline-flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-green-900 font-bold text-base sm:text-lg px-6 sm:px-8 py-4 rounded-xl transition-colors"
                 >
                   <Calendar className="h-5 w-5" />
                   Book a Court
                 </Link>
                 <Link
                   href="/#pricing"
-                  className="inline-flex items-center justify-center gap-2 border border-white/30 text-white hover:bg-white/10 font-medium text-lg px-8 py-6 rounded-xl transition-colors"
+                  className="inline-flex items-center justify-center gap-2 border border-white/30 text-white hover:bg-white/10 font-medium text-base sm:text-lg px-6 sm:px-8 py-4 rounded-xl transition-colors"
                 >
                   View Pricing
                 </Link>
@@ -149,7 +149,7 @@ export default function HomePage() {
                         </div>
                       </div>
                       <span className="text-lg font-bold text-green-700">
-                        ₱{court.price}/hr
+                        Php{court.price}/hr
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-1.5 mt-3">
@@ -178,7 +178,7 @@ export default function HomePage() {
                 <CardContent className="p-6 text-center">
                   <Cloud className="h-8 w-8 text-green-600 mx-auto mb-3" />
                   <h3 className="font-semibold text-gray-900 mb-1">Outdoor Courts</h3>
-                  <div className="text-3xl font-bold text-green-700 mb-2">₱300</div>
+                  <div className="text-3xl font-bold text-green-700 mb-2">Php300</div>
                   <p className="text-sm text-gray-500">per hour</p>
                   <p className="text-xs text-gray-400 mt-2">Courts 3, 4, 6</p>
                 </CardContent>
@@ -190,7 +190,7 @@ export default function HomePage() {
                 <CardContent className="p-6 text-center">
                   <Landmark className="h-8 w-8 text-green-600 mx-auto mb-3" />
                   <h3 className="font-semibold text-gray-900 mb-1">Indoor Courts</h3>
-                  <div className="text-3xl font-bold text-green-700 mb-2">₱350</div>
+                  <div className="text-3xl font-bold text-green-700 mb-2">Php350</div>
                   <p className="text-sm text-gray-500">per hour</p>
                   <p className="text-xs text-gray-400 mt-2">Courts 1, 2</p>
                 </CardContent>
@@ -199,7 +199,7 @@ export default function HomePage() {
                 <CardContent className="p-6 text-center">
                   <Star className="h-8 w-8 text-yellow-500 mx-auto mb-3" />
                   <h3 className="font-semibold text-gray-900 mb-1">Premium Indoor</h3>
-                  <div className="text-3xl font-bold text-green-700 mb-2">₱400</div>
+                  <div className="text-3xl font-bold text-green-700 mb-2">Php400</div>
                   <p className="text-sm text-gray-500">per hour</p>
                   <p className="text-xs text-gray-400 mt-2">Court 5 (VIP)</p>
                 </CardContent>
@@ -215,14 +215,14 @@ export default function HomePage() {
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">Operating Hours</h2>
               <p className="text-gray-500 text-lg">Open 7 days a week</p>
             </div>
-            <div className="max-w-lg mx-auto bg-white rounded-2xl shadow-sm border p-6">
+            <div className="max-w-lg mx-auto bg-white rounded-2xl shadow-sm border p-4 sm:p-6">
               <div className="space-y-3">
                 {[
-                  { day: "Monday – Friday", hours: "8:00 AM – 10:00 PM" },
-                  { day: "Saturday", hours: "8:00 AM – 10:00 PM" },
-                  { day: "Sunday", hours: "8:00 AM – 10:00 PM" },
+                  { day: "Monday - Friday", hours: "8:00 AM - 10:00 PM" },
+                  { day: "Saturday", hours: "8:00 AM - 10:00 PM" },
+                  { day: "Sunday", hours: "8:00 AM - 10:00 PM" },
                 ].map((item, i) => (
-                  <div key={i} className="flex justify-between items-center py-2 border-b last:border-0">
+                  <div key={i} className="flex flex-col xs:flex-row justify-between items-start xs:items-center py-2 border-b last:border-0 gap-1">
                     <span className="font-medium text-gray-700">{item.day}</span>
                     <span className="text-green-700 font-semibold">{item.hours}</span>
                   </div>
@@ -287,13 +287,13 @@ export default function HomePage() {
             className="object-cover object-center pointer-events-none"
           />
           <div className="container mx-auto px-4 md:px-6 text-center relative z-10">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Play?</h2>
-            <p className="text-green-100 text-lg mb-8 max-w-xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Ready to Play?</h2>
+            <p className="text-green-100 text-base md:text-lg mb-8 max-w-xl mx-auto">
               Book your pickleball court now and join the fastest-growing sport in the Philippines.
             </p>
             <Link
               href="/book"
-              className="inline-flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-green-900 font-bold text-lg px-8 py-6 rounded-xl transition-colors"
+              className="inline-flex items-center justify-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-green-900 font-bold text-base sm:text-lg px-6 sm:px-8 py-4 rounded-xl transition-colors"
             >
               Book a Court Now
               <ChevronRight className="h-5 w-5" />

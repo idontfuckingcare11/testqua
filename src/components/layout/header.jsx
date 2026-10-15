@@ -70,7 +70,7 @@ export function Header() {
   const searchDropdown = (
     <div
       ref={dropdownRef}
-      className="absolute top-full right-0 mt-2 w-[340px] bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50"
+      className="absolute top-full right-0 mt-2 w-[min(340px,calc(100vw-2rem))] bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50"
     >
       {searching ? (
         <div className="p-6 text-center">
@@ -112,8 +112,8 @@ export function Header() {
               <span className="font-bold text-green-700">{formatCurrency(trackResult.total_amount)}</span>
             </div>
           </div>
-          </div>
-        ) : notFound ? (
+        </div>
+      ) : notFound ? (
         <div className="p-4">
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Not Found</p>
@@ -195,10 +195,10 @@ export function Header() {
 
         {/* Mobile menu */}
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger className="md:hidden inline-flex items-center justify-center h-8 w-8 rounded-md text-gray-600 hover:bg-gray-100">
+          <SheetTrigger className="md:hidden inline-flex items-center justify-center h-10 w-10 rounded-md text-gray-600 hover:bg-gray-100" aria-label="Open menu">
             <Menu className="h-5 w-5" />
           </SheetTrigger>
-          <SheetContent side="right" className="w-[280px]">
+          <SheetContent side="right" className="w-[min(280px,90vw)] overflow-y-auto">
             <div className="flex flex-col gap-6 mt-8">
               <Link
                 href="/"

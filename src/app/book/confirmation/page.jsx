@@ -282,15 +282,14 @@ function BookConfirmationContent() {
           </Button>
         </div>
 
-        <div className="mt-4 text-center print:hidden">
-          <Link href="/" className="text-sm text-gray-500 hover:text-green-600">
-            <Home className="inline h-4 w-4 mr-1" />
+        <div className="mt-4 text-center print:hidden space-y-1.5">
+          <Link href="/" className="inline-flex items-center text-sm text-gray-500 hover:text-green-600">
+            <Home className="h-4 w-4 mr-1" />
             Back to Home
           </Link>
-          <span className="text-gray-300 mx-2">·</span>
-          <span className="text-sm text-gray-500">
-            Use the search bar in the header to track your reservation
-          </span>
+          <p className="text-xs text-gray-400">
+            Use the search bar in the header to track your reservation anytime
+          </p>
         </div>
       </div>
     </div>

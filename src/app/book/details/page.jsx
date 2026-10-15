@@ -111,12 +111,12 @@ export default function BookDetailsPage() {
           )}
         </div>
 
-        <div className="flex justify-between pt-4">
-          <Button type="button" variant="outline" onClick={() => router.push("/book/time")}>
+        <div className="flex flex-col-reverse sm:flex-row justify-between gap-3 pt-4">
+          <Button type="button" variant="outline" className="w-full sm:w-auto" onClick={() => router.push("/book/time")}>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Button>
-          <Button type="submit" className="bg-green-600 hover:bg-green-700 text-white px-8">
+          <Button type="submit" className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto px-6 sm:px-8">
             Review Booking
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>

@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import Image from "next/image";
 import {
   LayoutDashboard,
   CalendarDays,
@@ -18,7 +19,6 @@ import {
   Settings,
   LogOut,
   Menu,
-  CircleDot,
   X,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -38,6 +38,13 @@ export function AdminSidebar({ user }) {
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [avatarError, setAvatarError] = useState(false);
+
+  const avatarUrl =
+    user?.user_metadata?.avatar_url ||
+    user?.user_metadata?.picture ||
+    null;
+  const initial = (user?.user_metadata?.full_name || user?.email || "A")[0].toUpperCase();
 
   const handleLogout = async () => {
     const supabase = createClient();
@@ -51,7 +58,14 @@ export function AdminSidebar({ user }) {
     <div className="flex flex-col h-full">
       <div className="p-6">
         <Link href="/manage" className="flex items-center gap-2">
-          <CircleDot className="h-7 w-7 text-green-400" />
+          <Image
+            src="/wardologo.png"
+            alt="Court ni Wardo Logo"
+            width={36}
+            height={36}
+            className="object-contain"
+            style={{ mixBlendMode: "screen" }}
+          />
           <span className="text-xl font-bold text-white">Court ni Wardo</span>
         </Link>
         <p className="text-xs text-gray-400 mt-1">Admin Dashboard</p>
@@ -84,8 +98,18 @@ export function AdminSidebar({ user }) {
 
       <div className="p-4 border-t border-gray-700/50">
         <div className="flex items-center gap-3 px-3 py-2 mb-2">
-          <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-            {(user.user_metadata?.full_name || user.email || "A")[0].toUpperCase()}
+          <div className="relative w-8 h-8 rounded-full overflow-hidden shrink-0 bg-green-600 flex items-center justify-center text-white text-sm font-bold ring-2 ring-green-500/30">
+            {avatarUrl && !avatarError ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={avatarUrl}
+                alt={user?.user_metadata?.full_name || "Admin"}
+                className="w-full h-full object-cover"
+                onError={() => setAvatarError(true)}
+              />
+            ) : (
+              <span>{initial}</span>
+            )}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-white truncate">
@@ -119,7 +143,14 @@ export function AdminSidebar({ user }) {
           </SheetContent>
         </Sheet>
         <Link href="/manage" className="flex items-center gap-2 ml-2">
-          <CircleDot className="h-6 w-6 text-green-400" />
+          <Image
+            src="/wardologo.png"
+            alt="Court ni Wardo Logo"
+            width={30}
+            height={30}
+            className="object-contain"
+            style={{ mixBlendMode: "screen" }}
+          />
           <span className="font-bold text-white">Court ni Wardo Admin</span>
         </Link>
       </div>

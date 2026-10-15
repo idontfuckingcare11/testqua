@@ -179,7 +179,7 @@ export default function AdminReservationsPage() {
             <div className="py-12 text-center text-gray-500">No reservations found</div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full text-sm min-w-[700px]">
                 <thead>
                   <tr className="border-b bg-gray-50 text-left text-gray-500">
                     <th className="p-4 font-medium">Reservation #</th>
@@ -240,7 +240,7 @@ export default function AdminReservationsPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between p-4 border-t">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border-t gap-2">
               <p className="text-sm text-gray-500">
                 Showing {(page - 1) * 15 + 1} to {Math.min(page * 15, total)} of {total}
               </p>
@@ -272,7 +272,7 @@ export default function AdminReservationsPage() {
 
       {/* Detail Dialog */}
       <Dialog open={!!selectedRes} onOpenChange={() => setSelectedRes(null)}>
-        <DialogContent className="max-w-lg">
+        <DialogContent className="max-w-lg w-[calc(100vw-2rem)] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="font-mono text-green-700">
               {selectedRes?.reservation_number}

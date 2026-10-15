@@ -10,7 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { CircleDot, Loader2, Lock, Mail } from "lucide-react";
+import Image from "next/image";
+import { Loader2, Lock, Mail } from "lucide-react";
 import { toast } from "sonner";
 
 export default function AdminLoginPage() {
@@ -51,7 +52,15 @@ export default function AdminLoginPage() {
         <CardContent className="p-8">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <CircleDot className="h-8 w-8 text-green-600" />
+              <Image
+                src="/wardologo.png"
+                alt="Court ni Wardo Logo"
+                width={48}
+                height={48}
+                className="object-contain"
+                style={{ mixBlendMode: "multiply" }}
+                priority
+              />
               <span className="text-2xl font-bold text-green-700">Court ni Wardo</span>
             </div>
             <h1 className="text-xl font-semibold text-gray-900">Admin Login</h1>

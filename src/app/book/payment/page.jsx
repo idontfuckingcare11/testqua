@@ -16,6 +16,7 @@ import {
   Clock,
   ExternalLink,
   QrCode,
+  RefreshCw,
 } from "lucide-react";
 import { formatCurrency, formatTimeRange } from "@/lib/utils";
 import { toast } from "sonner";
@@ -38,7 +39,6 @@ function BookPaymentContent() {
   const { data, updateBooking } = useBooking();
 
   const [selectedMethod, setSelectedMethod] = useState(data.paymentMethod || "paymongo");
-
 
   // Dynamic QR Code State
   const [qrCodeUrl, setQrCodeUrl] = useState(null);
@@ -164,8 +164,6 @@ function BookPaymentContent() {
     };
   }, [paymentIntentId, currentReservationId, isPaidSuccess, router]);
 
-
-
   const hours = data.duration / 60;
   const total = (data.courtPrice || 0) * hours;
 
@@ -176,19 +174,19 @@ function BookPaymentContent() {
   };
 
   return (
-    <div>
+    <div className="w-full max-w-full px-2 sm:px-0">
       <BookingSteps currentStep={6} />
-      <div className="text-center mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+      <div className="text-center mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
           Payment
         </h1>
-        <p className="text-gray-500">Scan QR Ph or select your payment method</p>
+        <p className="text-sm sm:text-base text-gray-500">Scan QR Ph or select your payment method</p>
       </div>
 
-      <div className="max-w-md mx-auto">
+      <div className="max-w-md mx-auto w-full">
         <div className="bg-green-50 rounded-xl p-4 text-center mb-6 border border-green-100 shadow-sm">
           <p className="text-sm text-gray-500">Total Amount</p>
-          <p className="text-3xl font-bold text-green-700">{formatCurrency(total)}</p>
+          <p className="text-2xl sm:text-3xl font-bold text-green-700">{formatCurrency(total)}</p>
           <p className="text-xs text-gray-500 mt-1">
             {formatTimeRange(data.startTime || "", data.endTime || "")} · {data.duration} min
           </p>
@@ -207,13 +205,13 @@ function BookPaymentContent() {
               )}
               onClick={() => setSelectedMethod(option.id)}
             >
-              <CardContent className="p-4">
-                <div className="flex items-start gap-4">
-                  <div className="mt-1">{option.icon}</div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="font-semibold text-gray-900">{option.name}</span>
-                      <span className={cn("text-[11px] font-medium px-2 py-0.5 rounded-full border", option.badgeColor)}>
+              <CardContent className="p-3 sm:p-4">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="mt-1 shrink-0">{option.icon}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <span className="font-semibold text-sm sm:text-base text-gray-900">{option.name}</span>
+                      <span className={cn("text-[10px] sm:text-[11px] font-medium px-2 py-0.5 rounded-full border shrink-0", option.badgeColor)}>
                         {option.badge}
                       </span>
                     </div>
@@ -227,13 +225,13 @@ function BookPaymentContent() {
 
         {/* DYNAMIC QR PH DISPLAY - EMBEDDED DIRECTLY ON PAGE */}
         {selectedMethod === "paymongo" && (
-          <div className="bg-white border-2 border-emerald-500/40 rounded-2xl p-6 mb-6 shadow-md text-center">
+          <div className="bg-white border-2 border-emerald-500/40 rounded-2xl p-4 sm:p-6 mb-6 shadow-md text-center">
             {isPaidSuccess ? (
               <div className="py-6 space-y-3">
-                <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600 animate-pulse">
-                  <CheckCircle2 className="h-10 w-10" />
+                <div className="w-14 h-14 sm:w-16 sm:h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600 animate-pulse">
+                  <CheckCircle2 className="h-8 w-8 sm:h-10 sm:w-10" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900">Payment Confirmed!</h3>
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Payment Confirmed!</h3>
                 <p className="text-xs text-gray-500">Redirecting you to confirmation details...</p>
                 <Loader2 className="h-5 w-5 animate-spin text-emerald-600 mx-auto" />
               </div>
@@ -257,24 +255,24 @@ function BookPaymentContent() {
               </div>
             ) : qrCodeUrl ? (
               <div className="space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-gray-100">
-                  <div className="text-left">
-                    <p className="text-xs font-semibold text-gray-900">Scan with GCash / Maya / Bank</p>
+                <div className="flex items-center justify-between pb-2 border-b border-gray-100 gap-2">
+                  <div className="text-left min-w-0">
+                    <p className="text-xs font-semibold text-gray-900 truncate">Scan with GCash / Maya / Bank</p>
                     <p className="text-[11px] text-gray-400">Exact Amount: {formatCurrency(total)}</p>
                   </div>
-                  <div className="flex items-center gap-1.5 text-xs text-amber-600 font-medium bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-full">
+                  <div className="flex items-center gap-1.5 text-xs text-amber-600 font-medium bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full shrink-0">
                     <Clock className="h-3.5 w-3.5" />
                     <span>{formatTimer(secondsLeft)}</span>
                   </div>
                 </div>
 
                 {/* QR Code Container */}
-                <div className="relative mx-auto bg-white p-3 rounded-2xl border border-gray-200 shadow-sm inline-block">
+                <div className="relative mx-auto bg-white p-2 sm:p-3 rounded-2xl border border-gray-200 shadow-sm inline-block max-w-full">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={qrCodeUrl}
                     alt="Dynamic QR Ph"
-                    className="w-56 h-56 sm:w-64 sm:h-64 object-contain rounded-lg mx-auto"
+                    className="w-48 h-48 sm:w-64 sm:h-64 object-contain rounded-lg mx-auto max-w-full"
                   />
                   <div className="absolute top-2 right-2 bg-emerald-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs">
                     QR Ph
@@ -283,15 +281,15 @@ function BookPaymentContent() {
 
                 {/* Live pulsing status */}
                 <div className="flex items-center justify-center gap-2 text-xs font-semibold text-emerald-700 bg-emerald-50 py-2 px-3 rounded-xl border border-emerald-100">
-                  <span className="relative flex h-2.5 w-2.5">
+                  <span className="relative flex h-2.5 w-2.5 shrink-0">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                   </span>
-                  <span>Waiting for scan... Auto-confirms upon payment</span>
+                  <span className="text-[11px] sm:text-xs">Waiting for scan... Auto-confirms upon payment</span>
                 </div>
 
                 {/* Supported Wallets List */}
-                <div className="flex items-center justify-center gap-2 text-[11px] font-medium text-gray-500 pt-1">
+                <div className="flex items-center justify-center gap-1.5 sm:gap-2 text-[10px] sm:text-[11px] font-medium text-gray-500 pt-1 flex-wrap">
                   <span className="bg-gray-100 px-2 py-0.5 rounded">GCash</span>
                   <span className="bg-gray-100 px-2 py-0.5 rounded">Maya</span>
                   <span className="bg-gray-100 px-2 py-0.5 rounded">BPI / BDO</span>
@@ -303,18 +301,19 @@ function BookPaymentContent() {
         )}
 
         {/* Action Buttons */}
-        <div className="flex justify-between items-center gap-3 mt-6">
+        <div className="flex flex-col-reverse sm:flex-row justify-between items-center gap-3 mt-6">
           <Button
             variant="outline"
+            className="w-full sm:w-auto"
             onClick={() => router.push("/book/summary")}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Button>
 
-          <div className="text-xs text-gray-500 text-right">
+          <div className="text-xs text-gray-500 text-center sm:text-right">
             {isPaidSuccess ? (
-              <span className="text-emerald-700 font-bold flex items-center gap-1">
+              <span className="text-emerald-700 font-bold flex items-center justify-center sm:justify-end gap-1">
                 <CheckCircle2 className="h-4 w-4" /> Confirmed!
               </span>
             ) : (

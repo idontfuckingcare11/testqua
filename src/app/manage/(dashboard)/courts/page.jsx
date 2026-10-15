@@ -217,12 +217,12 @@ export default function AdminCourtsPage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-3">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Courts</h1>
           <p className="text-sm text-gray-500 mt-1">Manage your pickleball courts</p>
         </div>
-        <Button onClick={openAddDialog} className="bg-green-600 hover:bg-green-700">
+        <Button onClick={openAddDialog} className="bg-green-600 hover:bg-green-700 w-full sm:w-auto">
           <Plus className="h-4 w-4 mr-2" />
           Add Court
         </Button>
@@ -316,7 +316,7 @@ export default function AdminCourtsPage() {
 
       {/* Add / Edit Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md w-[calc(100vw-2rem)] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               {editingCourt ? "Edit Court" : "Add Court"}
@@ -411,7 +411,7 @@ export default function AdminCourtsPage() {
 
       {/* Block Court Dialog */}
       <Dialog open={blockDialogOpen} onOpenChange={setBlockDialogOpen}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md w-[calc(100vw-2rem)] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               Block Time — {blocksCourt?.name}
@@ -504,7 +504,7 @@ export default function AdminCourtsPage() {
 
       {/* Delete Confirmation Dialog */}
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-        <DialogContent className="max-w-sm">
+        <DialogContent className="max-w-sm w-[calc(100vw-2rem)]">
           <DialogHeader>
             <DialogTitle>Delete Court</DialogTitle>
           </DialogHeader>

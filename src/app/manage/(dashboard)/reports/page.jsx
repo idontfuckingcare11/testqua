@@ -202,7 +202,7 @@ export default function AdminReportsPage() {
     <div>
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Reports </h1>
+          <h1 className="text-2xl font-bold text-gray-900">Reports</h1>
           <p className="text-sm text-gray-500 mt-1">
             Revenue insights, reservation summaries, and usage analytics
           </p>
@@ -228,7 +228,7 @@ export default function AdminReportsPage() {
           </div>
 
           <Tabs value={revenuePreset} onValueChange={setRevenuePreset}>
-            <TabsList>
+            <TabsList className="flex w-full overflow-x-auto">
               <TabsTrigger value="today">Today</TabsTrigger>
               <TabsTrigger value="week">This Week</TabsTrigger>
               <TabsTrigger value="month">This Month</TabsTrigger>
@@ -336,14 +336,14 @@ export default function AdminReportsPage() {
           </div>
 
           {reservationStatusData.length > 0 && (
-            <div className="h-72">
+            <div className="h-64 sm:h-72">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
                     data={reservationStatusData}
                     cx="50%"
                     cy="50%"
-                    outerRadius={100}
+                    outerRadius="40%"
                     dataKey="value"
                     nameKey="name"
                     label={({ name, value }) => `${name}: ${value}`}
@@ -368,7 +368,7 @@ export default function AdminReportsPage() {
         </CardContent>
       </Card>
 
-      {/* Court Usage  Hours */}
+      {/* Court Usage & Peak Hours */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Court Usage */}
         <Card>

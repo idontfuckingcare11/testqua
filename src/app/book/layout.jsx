@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { BookingProvider } from "@/hooks/use-booking";
 import { Header } from "@/components/layout/header";

@@ -51,7 +51,7 @@ export default function BookTimePage() {
         </h1>
         <p className="text-gray-500">
           <span className="font-semibold text-green-700">{data.courtName}</span>
-          {" · "}
+          {" -at "}
           <span className="font-semibold">{data.date}</span>
         </p>
         <p className="text-sm text-gray-400 mt-1">Select one or more consecutive time slots</p>
@@ -84,7 +84,7 @@ export default function BookTimePage() {
                 )}
               >
                 <div className="text-sm font-semibold text-gray-900">
-                  {formatTime(slot.time)} – {formatTime(endTime)}
+                  {formatTime(slot.time)} - {formatTime(endTime)}
                 </div>
                 <div className="text-xs text-gray-500 mt-1">
                   {slot.available
@@ -107,11 +107,11 @@ export default function BookTimePage() {
                 {selectedCount} slot{selectedCount !== 1 ? "s" : ""} selected
               </p>
               <p className="text-xs text-gray-400 mt-0.5">
-                {formatTime(data.startTime || "")} – {formatTime(data.endTime || "")} · {data.duration} min
+                {formatTime(data.startTime || "")} - {formatTime(data.endTime || "")} -at {data.duration} min
               </p>
             </div>
             <p className="text-lg font-bold text-green-700">
-              ₱{totalAmount.toLocaleString()}
+              Php{totalAmount.toLocaleString()}
             </p>
           </div>
         </div>

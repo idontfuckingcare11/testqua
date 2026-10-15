@@ -126,7 +126,7 @@ export default function AdminCustomersPage() {
             <div className="py-12 text-center text-gray-500">No customers found</div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+              <table className="w-full text-sm min-w-[600px]">
                 <thead>
                   <tr className="border-b bg-gray-50 text-left text-gray-500">
                     <th className="p-4 font-medium">Customer</th>
@@ -183,7 +183,7 @@ export default function AdminCustomersPage() {
         open={!!selectedCustomer}
         onOpenChange={() => setSelectedCustomer(null)}
       >
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl w-[calc(100vw-2rem)] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{selectedCustomer?.full_name}</DialogTitle>
           </DialogHeader>

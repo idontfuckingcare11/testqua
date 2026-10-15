@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import Image from "next/image";
+import { useState, useEffect } from "react";
 import { getSettings, updateSettings } from "@/actions/admin";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Settings, Save, Loader2, Upload, QrCode, Mail } from "lucide-react";
+import { Settings, Save, Loader2, Mail } from "lucide-react";
 import { toast } from "sonner";
 import { LoadingPage } from "@/components/shared/loading-spinner";
 import { DAYS_OF_WEEK, DEFAULT_EMAIL_SETTINGS } from "@/lib/constants";
@@ -33,8 +32,6 @@ export default function AdminSettingsPage() {
     date_range_end: "2030-12-31",
   });
   const [emailConfig, setEmailConfig] = useState(DEFAULT_EMAIL_SETTINGS);
-  const gcashInputRef = useRef(null);
-  const gotymeInputRef = useRef(null);
 
   useEffect(() => {
     getSettings()
@@ -112,23 +109,7 @@ export default function AdminSettingsPage() {
     }
   };
 
-  const handleQrUpload = (field, file) => {
-    if (!file.type.startsWith("image/")) {
-      toast.error("Please upload an image file");
-      return;
-    }
-    if (file.size > 2 * 1024 * 1024) {
-      toast.error("Image must be under 2MB");
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const base64 = e.target?.result;
-      setFacility((prev) => ({ ...prev, [field]: base64 }));
-      toast.success("QR code uploaded. Click Save to apply.");
-    };
-    reader.readAsDataURL(file);
-  };
+
 
   const updateHour = (day, field, value) => {
     setOperatingHours((prev) => ({
@@ -155,6 +136,8 @@ export default function AdminSettingsPage() {
           <p className="text-sm text-gray-500 mt-1">Manage your facility configuration</p>
         </div>
       </div>
+
+
 
       {/* Facility Settings */}
       <Card>
@@ -210,95 +193,7 @@ export default function AdminSettingsPage() {
         </CardContent>
       </Card>
 
-      {/* QR Code Upload */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <QrCode className="h-5 w-5" />
-            Payment QR Codes
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-gray-500 mb-4">
-            Upload QR codes for GCash and GoTyme. These will be shown to customers during payment.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* GCash QR */}
-            <div className="space-y-3">
-              <Label>GCash QR Code</Label>
-              <input
-                ref={gcashInputRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) handleQrUpload("gcash_qr", file);
-                  e.target.value = "";
-                }}
-              />
-              {facility.gcash_qr ? (
-                <div className="relative w-full aspect-square max-w-[200px] bg-white rounded-lg border p-2">
-                  <Image src={facility.gcash_qr} alt="GCash QR" fill className="object-contain" />
-                </div>
-              ) : (
-                <div className="w-full aspect-square max-w-[200px] bg-gray-50 rounded-lg border-2 border-dashed flex flex-col items-center justify-center text-gray-400">
-                  <QrCode className="h-8 w-8 mb-2" />
-                  <p className="text-xs">No QR uploaded</p>
-                </div>
-              )}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => gcashInputRef.current?.click()}
-              >
-                <Upload className="h-4 w-4 mr-2" />
-                {facility.gcash_qr ? "Replace" : "Upload"} GCash QR
-              </Button>
-            </div>
 
-            {/* GoTyme QR */}
-            <div className="space-y-3">
-              <Label>GoTyme QR Code</Label>
-              <input
-                ref={gotymeInputRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
-                  if (file) handleQrUpload("gotyme_qr", file);
-                  e.target.value = "";
-                }}
-              />
-              {facility.gotyme_qr ? (
-                <div className="relative w-full aspect-square max-w-[200px] bg-white rounded-lg border p-2">
-                  <Image src={facility.gotyme_qr} alt="GoTyme QR" fill className="object-contain" />
-                </div>
-              ) : (
-                <div className="w-full aspect-square max-w-[200px] bg-gray-50 rounded-lg border-2 border-dashed flex flex-col items-center justify-center text-gray-400">
-                  <QrCode className="h-8 w-8 mb-2" />
-                  <p className="text-xs">No QR uploaded</p>
-                </div>
-              )}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => gotymeInputRef.current?.click()}
-              >
-                <Upload className="h-4 w-4 mr-2" />
-                {facility.gotyme_qr ? "Replace" : "Upload"} GoTyme QR
-              </Button>
-            </div>
-          </div>
-          <div className="flex justify-end mt-4">
-            <Button onClick={handleSaveFacility} disabled={saving} className="bg-green-600 hover:bg-green-700">
-              {saving ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
-              Save QR Codes
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
 
       {/* Email Notifications */}
       <Card>
@@ -374,27 +269,27 @@ export default function AdminSettingsPage() {
           <CardTitle>Operating Hours</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="space-y-3">
+          <div className="space-y-3 overflow-x-auto">
             {DAYS_OF_WEEK.map((day) => {
               const hours = operatingHours[day];
               const isClosed = hours === null;
               return (
-                <div key={day} className="flex items-center gap-4">
-                  <span className="w-28 text-sm font-medium text-gray-700 capitalize">{day}</span>
+                <div key={day} className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-4 min-w-0">
+                  <span className="w-24 sm:w-28 text-sm font-medium text-gray-700 capitalize shrink-0">{day}</span>
                   {isClosed ? (
-                    <span className="text-sm text-gray-400 italic">Closed</span>
+                    <span className="text-sm text-gray-400 italic flex-1">Closed</span>
                   ) : (
                     <>
                       <Input
                         type="time"
-                        className="w-32"
+                        className="w-28 sm:w-32"
                         value={hours?.open || "08:00"}
                         onChange={(e) => updateHour(day, "open", e.target.value)}
                       />
-                      <span className="text-gray-400">to</span>
+                      <span className="text-gray-400 text-sm">to</span>
                       <Input
                         type="time"
-                        className="w-32"
+                        className="w-28 sm:w-32"
                         value={hours?.close || "22:00"}
                         onChange={(e) => updateHour(day, "close", e.target.value)}
                       />

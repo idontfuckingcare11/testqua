@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -109,15 +109,15 @@ export default function BookCourtPage() {
         })}
       </div>
 
-      <div className="mt-6 flex justify-between">
-        <Button variant="outline" onClick={() => router.push("/book")}>
+      <div className="mt-6 flex flex-col-reverse sm:flex-row justify-between gap-3">
+        <Button variant="outline" className="w-full sm:w-auto" onClick={() => router.push("/book")}>
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back
         </Button>
         <Button
           onClick={handleContinue}
           disabled={!selectedId}
-          className="bg-green-600 hover:bg-green-700 text-white px-8"
+          className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto px-6 sm:px-8"
         >
           Continue
           <ArrowRight className="ml-2 h-4 w-4" />
